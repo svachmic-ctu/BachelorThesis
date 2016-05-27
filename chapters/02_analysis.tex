@@ -1,0 +1,158 @@
+\chapter{Analýza a návrh řešení}
+Pro objektivní zhodnocení kvality sítě je potřeba sesbírat data v co nejkratších časových úsecích, abychom se vyhnuli případům, kdy je zrovna slunečno a uživatel sedí v parku \\pod širým nebem. 
+
+Pro zařízení s operačním systémem iOS existuje řada aplikací přímo na App Store měřících rychlost připojení. Nejpovedenější je nejnovější verze (3.0) aplikace Speedtest.net. Využívá CDN (Content Delivery Network - geolokačně distribuované servery) pro přesné měření na více místech po celém světě. Bohužel v rámci CDN neprovozuje servery v ČR, a tím mohou být výsledky zkreslené. Pro tuzemského uživatele se jeví jako nejlepší aplikace DSL.cz. Ani ta ovšem nefunguje podle představ projektu MBTest. Aplikace změří rychlost, výsledky uloží a zobrazí uživateli na mapě. Avšak nikde neuvádí, jaké techniky měření použila, neumí měřit na pozadí a není optimalizovaná ani pro nejnovější iPhone 5, ani pro tablety iPad.
+
+\section{Požadavky}
+Aplikace se skládá z funkčních a nefunkčních požadavků, jejichž sběr následoval po definování oblasti problematiky této BP. Jelikož společnost Apple vydala pravidla ohraničující svobodu prográmatora pro korektní vývoj aplikací, bylo třeba veškeré požadavky validovat, zda nejsou v kolizi s pravidly společnosti. Výsledné požadavky byly sepsány tak, aby podléhaly normám FURPS a SMART.
+
+\paragraph{FURPS: }
+\begin{itemize}
+	\item {\bf F}unctionality - požadavek popisuje funkcionalitu		
+	\item {\bf U}sability - požadavek na funkci je dobře použitelný
+	\item {\bf R}eliability - požadavek na funkci je spolehlivý
+	\item {\bf P}erformance - požadavek na funkci nesnižuje celkový výkon
+	\item {\bf S}ustainability - požadavek na funkci je udržovatelný do budoucna
+\end{itemize}
+\paragraph{SMART: }
+\begin{itemize}
+	\item{\bf S}pecific - požadavek na funkci je specifický a dobře popsatelný
+	\item{\bf M}easurable - požadavek na funkci je dobře měřitelný (zda je splněn)
+	\item{\bf A}chievable - požadavek na funkci je dosažitelný
+	\item{\bf R}elevant - požadavek na funkci je relevantní vůči celému systému
+	\item{\bf T}imeboxed - požadavek na funkci je ohraničen časem
+\end{itemize}
+
+\subsection{Funkční požadavky}
+\begin{enumerate}
+	\item Aplikace zjistí informace o operátorovi.
+	\item Aplikace zjistí polohu přístroje a určí přesnost polohy.
+	\item Aplikace se autorizuje vůči serveru unikátním klíčem.
+	\item Aplikace umožní jednorázové měření.
+	\item Aplikace umožní periodické měření v nastavitelném intervalu.
+	\item Aplikace naváže spojení přes TCP a změří parametry sítě.
+	\item Aplikace naváže spojení přes UDP a změří parametry sítě.
+	\item Aplikace odešle výsledky na server.
+	\item Aplikace uloží výsledky do lokální databáze.
+\end{enumerate}
+\subsection{Nefunkční požadavky}
+\begin{enumerate}
+	\item Aplikace umožní běh na pozadí\footnote{Pokud chce uživatel měřit pravidelně, neměl by být omezován v dalším používání zařízení, a proto bude mít možnost aplikaci minimalizovat.}.
+	\item Aplikace nabídne jednoduché uživatelské rozhraní.
+\end{enumerate}
+\newpage
+
+\section{iOS}
+Systém iOS (dříve označován jako iPhone OS) je operační systém běžící ve všech iPhone smartphonech, iPod Touch přehrávačích a tabletech iPad. Cílovou skupinou této BP jsou primárně smartphony iPhone a tablety iPad (obě zařízení sdílí stejný operační systém, proto nebude třeba psát aplikaci dvakrát - pouze se vytvoří dvě optimalizovaná uživatelská rozhraní). Přenosné hudební přehrávače iPod Touch podporují přenos dat pouze přes wifi a tudíž nejsou cílem tohoto projektu, nicméně aplikace na těchto zařízeních bude možno spustit.
+
+\subsection{Struktura iOS}
+Systém iOS je rozdělen na čtyři základní vrstvy, které podle své povahy poskytují vývojáři rozhraní pro komunikaci s hardwarem na úrovni jazyku Objective-C. Tato rozhraní dovolují psát konzistentní aplikace nehledě na rozdílné vybavení jednotlivých modelů. Na nejnižší úrovni se nachází fundamentální služby, na kterých stojí všechny aplikace. Naopak na úrovni nejvyšší se nachází sofistikovanější služby na vyšších úrovních abstrakce.
+
+Základní čtyři vrstvy (u každé vrstvy je uveden příklad užití):
+\begin{enumerate}
+	\item Core OS (low-level technologie)
+	\begin{itemize}
+		\item Bluetooth komunikace s externím zařízením
+	\end{itemize}
+	\item Core Services (high-level technologie)
+	\begin{itemize}
+		\item Určení polohy uživatele
+	\end{itemize}
+	\item Media (grafické, audio-video technologie)
+	\begin{itemize}
+		\item Animace průběhu měření
+	\end{itemize}
+	\item Cocoa Touch (technologie pro interakci s uživatelem)
+	\begin{itemize}
+		\item GUI pro interakci s uživatelem
+	\end{itemize}
+\end{enumerate}
+
+Jednotlivá rozhraní jsou rozdělená do logických frameworků pro snadnější manipulaci. Každý framework je složka s hlavičkovými soubory, dokumentací a příklady užití. Při užití frameworku v aplikaci jsou samozřejmě importovány pouze potřebné hlavičkové soubory.
+
+Jádro systému iOS je totožné s tím v Mac OS X (Mach) a sdílí velkou část frameworků v prostředních vrstvách systému. Systém iOS se tedy řadí do rodiny operačních systémů UNIX.
+\newpage
+
+\subsection{Distribuce aplikací}
+Distribuce aplikací pro iOS je narozdíl od Androidu poměrně složitější. Aby mohl vývojář psát aplikace pro iOS, musí být registrovaný na Vývojářském portálu \cite{DEVPORT}. Pro ladění vlastní aplikace na svém iOS zařízení již nic dalšího nepotřebuje. Pro distribuci aplikace na další zařízení už musí být součásti jednoho ze tří placených programů:
+
+\begin{enumerate}
+\item {\bf Individuální program - 99\$ ročně}\\
+Levnější z programů umožní uživateli ladit a testovat aplikace až na sto zařízeních. Zároveň může distribuovat hotové aplikace na App Store a to buď zadarmo nebo za poplatek. Pokud si někdo zakoupí jeho aplikaci, Apple si vezme jako \uv{goodwill} 30\% ze zaplacené částky.
+
+\item {\bf Enterprise program - 299\$ ročně}\\
+Tento program je dražší, protože dovoluje tzv. \uv{in-house} distribuci aplikací. Tato distribuce je vhodná pro firmy s větším počtem zaměstnanců, které chtějí rozšířit mezi své zaměstnance aplikaci pro interní použití, aniž by bylo třeba nahrávat aplikaci na App Store.
+
+\item {\bf Univerzitní program - zdarma}\\
+Univerzitní program je podpora mladých studujících programátorů ze strany společnosti Apple (katedra počítačů je součástí tohoto programu). Správce účtu může vygenerovat libovolnému počtu studentů certifikáty pro podepisování aplikací a pro distribuci na vlastní zařízení. V rámci tohoto programu není možné prodávat aplikace \\přes App Store.
+\end{enumerate}
+
+Pro distribuci aplikace jsem zvolil firemní účet společnosti Casablanca INT s.r.o., pod kterým jsem již vydal semestrální práci pro předmět A7B32KBE (Kódy a bezpečnost) - šifrování textu pomocí Autoklíče.
+
+\subsubsection*{App Store}
+Zpřístupnění aplikace pro veřejnost přes App Store podléhá striktním nárokům ze strany Apple. Je třeba dodat splashscreen a ikony v přesných velikostech (retina\footnote{Retina display - display s vysokým rozlišením (640 x 960), poprvé uveden u modelu iPhone 4 v roce 2010.}, non-retina, miniatura a App Store ikona) a musí obsahovat přesně vyplněnou tabulku funkcionalit - co aplikace využívá za externí aplikace dodávané s iOS (například Newsstand - tzv. Kiosek, který slouží pro aplikace, které se chovají jako magazíny a pravielně stahují nová čísla.), zda umožňuje běh na pozadí atp. Těsně před kompilací je provedena rychlá kontrola na úrovni kódu - zda uživatel nepoužívá privátní knihovny - knihovny, které iOS má, ale nejsou standartně zpřístupněné vývojářům, protože nejsou například řádně zdokumentované, či se teprv testují.
+
+Pokud projde aplikace tímto prvotním testem prováděným na straně uživatele přímo v prostředí Xcode, může být odeslán binární soubor na servery Apple. Aby mohl vývojář aplikaci odeslat a nechat ji projít schvalovacím procesem, musí shromáždit veškeré materály a metadata a nahrát je na Distribuční server \cite{DISTRO}. Jedná se o screenshoty, popis aplikace, klíčová slova, URL stránky pro podporu a zařazení do kategorie na App Store. Zároveň může nechat zprávu pro QA\footnote{Quality Assurance - tester.} specialistu ohledně aplikace - např. pokud bude potřebovat testovací uživatelské jméno a heslo, aby mohl plně využít aplikaci. Po splnění těchto požadavků se zařadí aplikace do fronty a čeká dokud na ní \uv{nepřijde řada}. Vývojář je vždy informován prostřednictvím e-mailu, hned jakmile se stav změní. Aplikace nabývá těchto stavů:
+
+\begin{enumerate}
+\item {\bf Waiting for review}\\
+V tuto chvíli je aplikace ve frontě a čeká na specialistu, který aplikaci prohlédne a posoudí podle předpisů Apple. Mezi předpoklady pro uvolnění aplikace patří mimojiné:
+	\begin{itemize}
+		\item Aplikace je nezávadná pro uživatele.
+		\item Aplikace není čistě marketingový nástroj sloužící k propagaci jiného produktu.
+		\item Aplikace dělá přesně to, co je uvedeno v popisu.
+		\item Screenshoty jsou dostatečně vypovídající o funkcionalitě aplikace.
+		\item Aplikace neobsahuje nevhodné materiály.
+	\end{itemize}
+\item {\bf In review}\\
+V tuto chvíli byl aplikaci přiřazen QA specialista a věnuje se kontrole všech náležitostí.
+\item {\bf Rejected binary}\\
+Bylo vyhodnoceno, že aplikace je něčím závadná - nesplňovala jeden nebo více předpokladů (viz výše). Vývojář má možnost nahrát nový binární soubor, ale se ztrátou pořadí ve frontě.
+\item {\bf Rejected metadata}\\
+Bylo vyhodnoceno, že informace uvedené k aplikaci nejsou připravené k uvolnění aplikace - chybí screenshoty, popis je příliš vágní apod. Vývojář má možnost chybu napravit bez ztráty pořadí ve frontě.
+\item {\bf Processing for App Store}\\
+Aplikace byla shledána nezávadnou a bude v nejbližší době ke stažení na App Store.
+\end{enumerate}
+
+Apple se tímto procesem nesnaží házet klacky pod nohy vývojářům, ale chce nabízet svým zákazníkům pouze tu nejvyšší kvalitu. Zároveň tím zabrání distribuci škodlivých aplikací, které by shromažďovaly uživatelská citlivá data.
+
+Ani Apple není bezchybný a už se mnohokrát stalo, že byla uvolněna aplikace, která nesplňovala požadavky. Vývojář schoval drobnou funkcionalitu hluboko uvnitř a QA specialista si jí nevšimnul.
+
+\subsubsection*{Podpora verzí iOS}
+Podle oficiálního vyjádření společnosti Apple \cite{ENGADGET} se číslo aktivních zařízeních se systémem iOS přehouplo přes metu 500 milionů, z čehož, dle poslední tiskové zprávy \cite{APPPRESS} více než polovina, tedy 300 milionů má již nainstalovánou nejnovější verzi systému - iOS 6, což byl hlavní rozhodovací faktor, proč od začátku podporovat zařízení s verzí iOS 5 a vyšší.
+
+\newpage
+
+\section{Omezení}
+Knihovna Cocoa API je bohatá na různé funkcionality, ovšem některé věci jsou vývojářům zakázány. Jedna konkrétní - po incidentu s monitorováním pohybu uživatelů se zařízením iPhone odebral Apple vývojářům možnost získat unikátní ID jakéhokoliv zařízení.
+
+Takových omezení je více a mohou zasahovat do rozdílných oblastí. Některé si nyní projdeme.
+\subsection{Operátor}
+\subsubsection*{MNC a MCC}
+Třída určená pro zjištění informací o operátorovi CTTelephonyNetworkInfo poskytuje kódy MNC a MCC pouze o domácí síti. V případě, že se zařízení nachází mimo domácí síť, vrací stejné hodnoty (nelze určit, k jakému operátorovi je zařízení připojeno).
+\subsubsection*{BTS}
+Třída CTTelephonyNetworkInfo neposkytuje žádné informace ohledně BTS, ke které je připojená. Apple se snaží anonymizovat zařízení a zabezpečit tak soukromí uživatele. Vývojář se musí smířit s tím, že tyto informace momentálně z přístroje nedostane.
+\subsubsection{FUP}
+Zkratka FUP označuje termín \emph{Fair User Policy}. Jedná se o stropní hranici objemu dat, který může uživatel \uv{spotřebovat} po předem domluvenou dobu (nabídky jsou u různých operátorů odlišné). Pakliže uživatel data spotřebuje, operátor rapidně omezí rychlost připojení k internetu. Nabídky se opět liší u každého operátora, pro ilustraci - Telefonica Czech Republic, a.s. může připojení k internetu omezit až na 16kbps. \cite{ODVA}
+
+V systému iOS se bohužel nenachází žádný způsob jak zjistit, že uživatel právě překročil hranici FUP. 
+\subsubsection*{Konzultace u společnosti Telefonica Czech Republic, a.s.}
+Po telefonické debatě s odborníkem na mobilní internet mi bylo doporučeno, abych v aplikaci dal uživateli možnost vyplnit přístupové údaje do portálu \uv{Internetová samoobsluha Moje O2}. Tento portál má totiž přihlašování implementováno přes RESTové rozhraní a bylo by možné se přihlásit standartním POST požadavkem. Následně by bylo třeba parsovat webovou stránku, na které se dá v jednom určitém tagu najít, zda má uživatel již aktivní FUP.
+
+Tuto variantu jsem ovšem zavrhnul, neboť mi to přijde jako zásah do uživatelova soukromí, protože na stránce daného portálu se nachází více citlivých dat. Zároveň se jedná \\o špatně udržitelnou funkcionalitu, protože se tyto stránky v pravidelných intervalech mění. Poslední a nejvíce validní důvod byl, že by se jednalo o velice specifickou implementaci \\pro jednoho jediného operátora. Implementovat tento proces pro více než tři operátory považuji za ztrátu času a energie.
+\subsection{Poloha}
+Od verze iPhone 3G mají všechny iPhone zařízení GPS chip pro určování pozice a od verze iPhone 5 mají i GLONASS chip. Apple určování pozice přes třídu CLLocationManager zapouzdřuje a není možné zjistit, zda je pozice určená díky GPS chipu, GLONASS chipu, WiFi či BTS. Tím pádem není možné zjistit počet satelitů a vrací pouze přesnost pozice (v metrech).
+\subsection{Běh na pozadí}
+Běh aplikace na pozadí má dva aspekty - splnitelnost v rámci operačního systému a splnitelnost v rámci pravidel Apple. V rámci operačního systému je podpora od verze iOS 3 (vydána společně s iPhone 3G - prvním iPhonem s GPS chipem). 
+
+V rámci pravidel společnosti Apple se nachází přesné definice aplikací, které mohou podporovat běh na pozadí:
+
+\begin{enumerate}
+	\item Aplikace, které přehrávají audio obsah (přehrávače).
+	\item Aplikace, které uživateli oznamují informace o jeho poloze (navigace).
+	\item Aplikace, které podporují VoIP protokol.
+	\item Aplikace v rámci Newsstand, které pravidelně stahují nový obsah (časopisy, noviny).
+	\item Aplikace, které pravidelně přijímají data z externích zažízení.
+\end{enumerate}
+
+Naše aplikace se nachází na pomezí bodu 2. Je ale třeba definovat, že měření, které probíhá na pozadí (periodicky), je zároveň monitoringem pohybu uživatele, neboť před i po měření vyžaduje server pozice zařízení. Pakliže skončí měření a aplikace poskytne uživateli zpětnou vazbu s údaji o jeho pozicích a naměřených hodnotách, neměla by společnost Apple mít problém se schválením aplikace do App Store.

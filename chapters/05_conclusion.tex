@@ -1,0 +1,33 @@
+\chapter{Závěr}
+
+\section{Splněné cíle práce}
+Jelikož bylo v projektu MBTest zainteresováno více lidí, přirozeně přicházely často nové podněty a nápady pro funkcionalitu. Některé byly zapracovány, některé ne. Základní požadavky však byly beze zbytku splněny a celý systém lze prohlásit za funkční.
+
+Mně osobně nejvíce bavila implementační část. Musel jsem se vypořádat se zákazy Applu a najít korektní cesty, jak vyřešit danou problematiku (například běh na pozadí). Zároveň jsem se naučil implementovat TCP/UDP komunikaci v jazyce Objective-C a objevil jsem nástupce ASIHTTPRequest frameworku - AFNetworking framework, kterého hodlám hojně používat v dalších projektech.
+
+\section{Budoucí funkce}
+Bohužel nebylo možné implementovat veškeré vysněné funkce, které vznikly během společných konzultací a sezení celého týmu. Největší překážku, kterou jsem musel překonat, byl běh na pozadí, který mě zaměstnal téměř na dva měsíce vývoje. Takové zdržení mi nedovolilo implementovat tyto funkcionality:
+
+\begin{enumerate}
+\item Graficky propracované GUI
+
+Rád bych zapracoval kompletní grafické zpracování s vlastními navrženými komponentami.
+\item Pokročilá animace průběhu měření
+
+Aplikace by měla být líbivá, neboť vzhled je u dnešních aplikací na prvním místě. Zároveň screenshoty v App Store jsou první náhled do aplikace pro uživatele - podle nich se rozhoduje, zda ji stáhne, nebo ne.
+\item Pokročilá detekce chyb při měření
+
+Rád bych vytvořil \uv{chytřejší} odchytávání chyb. Automat by se učil a sám rozhodoval, proč chyba nastala a co může dělat, aniž by přerušil měření a prohlásil jej za neúspěšné.
+\item Lokální push notifikace o vykonaném měření
+
+Pro uživatele by bylo jistě zajímavé, kdyby mohl mít zpětnou vazbu o průběhu měření na pozadí ve formě push notifikací.
+\item Zobrazení jednotlivých i více výsledků na mapě
+
+Velice zajímavá funkce je zobrazení mapy průběhu měření - odkud kam uživatel šel. \\K tomu je potřeba v pravidelných intervalech ukládat pozici zařízení.
+\item Zobrazení grafu rychlostí v daném časovém úseku
+
+Statistiky jsou vždy zajímavé i na menším displayi. Pro uživatele by bylo jistě přínosné je  přehledně zobrazit v grafu.
+\end{enumerate}
+
+\section{Budoucnost projektu}
+Projekt nevnímám jako ukončený. Rád bych jej vylepšoval a přidával nové funkcionality. Vidím prostor pro zlepšování prezentace dat uživateli. Zařízení s iOS mají již v této době poměrně výkonný hardware a jistě by se dal využít k složitějším statistickým výpočtům. Jelikož jsem spojil svou budoucnost s programem OI, nevidím důvod, proč bych neměl na projektu nadále pokračovat.

@@ -1,0 +1,31 @@
+\chapter{Grafický návrh}
+\section{Přihlašovací obrazovka}
+První, co uživatel uvidí, rozhodne o tom, zda si aplikaci nechá. Může se to jevit až vágní, nicméně první dojem hraje velice důležitou roli. Proto jsem zvolil realistický, jednoduchý design.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=5cm]{figures/AX_graphics/login_screen.jpg}
+		\caption{Přihlašovací obrazovka pro iPhone 5}
+		\label{fig:login}
+	\end{center}
+\end{figure}
+
+V návrhu nejsou obsažené texty, ty se doplňují kvůli lokalizaci až v Xcode. Horní dvě kolonky jsou vstupy pro \emph{uživatelské jméno} a \emph{heslo}. Tlačítko má jednu zajímavost. Pokud jsou kolonky prázdné, nese nápis \uv{Anonymous}. Po stisknutí nabídne uživateli dialog, zda chce do aplikace opravdu vstoupit jako anonymní uživatel, nebo jestli nechce přejít raději na stránky a zaregistrovat se. Pokud jsou ovšem obě dvě kolonky vyplněné, nápis se změní na \uv{Sign in}. Tímto krokem jsem chtěl zamezit vzniku dalšího tlačítka, které by rozbilo kompaktní design obrazovky.
+
+\subsubsection*{Proces tvorby}
+Nejprve se musí stanovit, odkud světlo půjde. Zvolil jsem metodu \uv{západ slunce}, tudíž jsem umístil zdroj světla do levého horního rohu. 
+Dále bylo nutné uvědomit si pořadí vrstev, protože na tom stojí celý vzhled. Pro každou komponentu vypíchnu nejdůležitější kroky.
+
+\begin{enumerate}
+	\item {\bf Text}
+	\begin{enumerate}
+		\item Po vytvoření nápisu bylo třeba text rozkopírovat zhruba desetkrát šikmo dolu s černou maskou. Na tuto vrstu jsem posléze použil funkci \emph{Motion Blur}.
+		\item Pro vystoupení hran textu jsem nad textem vytvořil novou vrstu vyplněnou bílou barvou. Vrstvu jsem označil, posunul o pixel šikmo dolu a celou smazal. Tím zůstaly bílé obrysy po levé straně textu tvořící prostorový vjem.
+	\end{enumerate}
+	\item {\bf Světlo}
+	\begin{enumerate}
+		\item Nejprve jsem přes text vytvořil různě široké obdelníky, které jsem posléze vyrotoval po směru světla a upravil, aby z rohu vycházely. Nastavil jsem jim 20\% Opacity a použil funkci \emph{Gaussian Blur}.
+		\item Nejproblematičtější, ale zároveň nejdůležitější krok, je synchronizace světla a stínu s textem. Na to bylo potřeba vytvořit novou masku paprsků s označením textu, čímž se vytvořil stín přesně tam, kde měl.
+		\item Poslední, již kosmetická úprava, bylo oživení světla pomocí filtru \emph{Lightning Effects}. Použil jsem nastavení \emph{Spotlight}, a to dodalu světlu život.
+	\end{enumerate}
+\end{enumerate}

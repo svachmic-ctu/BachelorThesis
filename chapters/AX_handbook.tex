@@ -1,0 +1,35 @@
+\chapter{Instalační a uživatelská příručka}
+
+\section{Instalace z App Store}
+
+\begin{enumerate}
+	\item Otevřít App Store v zařízení iPhone nebo iPad
+	\item Zadat do vyhledávání \uv{MBTest}
+	\item Zmáčknout tlačítko stáhnout (aplikace je zdarma)
+	\item Vyčkat na stáhnutí a instalaci (aplikace je menší než 50MB - je možné ji stáhnout bez WiFi\cite{APPIN})
+\end{enumerate}
+
+\section{Vlastní kompilace zdrojových souborů}
+
+\begin{enumerate}
+	\item Otevřít MBTester.xcodeproj v Xcode IDE verzi 4.2.5 a vyšší
+	\item V záložce Build Settings, kolonka Code Signing, je třeba podepsat kód vlastním certifikátem
+	\item Připojit zařízení s aktivním vývojářským účtem
+	\item Zmáčknout tlačítko \emph{Build \& Run}
+\end{enumerate}
+
+\section{Jak aplikaci používat}
+
+\subsection{Uživatel}
+Po spuštění aplikace uvítá uživatele přihlašovací obrazovka. Uživatel se může buď přihlásit, nebo pokračovat anonymně. Pokud uživatel nevyplní jméno a heslo, bude dotázán, zda chce opravdu pokračovat anonymně, nebo zda si chce vytvořit účet - v tomto případě bude přesměrován na webové stránky, aby se zaregistroval. Neregistrovaný uživatel má uložené pouze lokálně naměřená data v telefonu, a nemůže tak prohlížet své výsledky včetně statistik na webu projektu.
+
+Pro odhlášení stačí na hlavní obrazovce zmáčknout tlačítko v levém horním rohu v navigační liště.
+
+\subsection{Měření}
+Měření je možné spustit zmáčknutím tlačítka \emph{Measure} na hlavní stránce aplikace. Následující obrazovka nabídne uživateli zvolení parametrů měření - velikost souboru pro upload a download, zda chce měřit periodicky, potažmo při jaké periodě.
+Během měření může uživatel aplikaci minimalizovat, ale ne vypnout.
+
+\subsection{Výsledky}
+Dílčí výsledky lze prohlížet přímo z obrazovky probíhajícího měření. Stačí zmáčknout tlačítko \uv{Results} v horním pravém rohu v navigační liště.
+
+Pro zobrazení kompletní historie naměřených výsledků daného zařízení je třeba přejít na hlavní obrazovku (pokud probíhá měření, bude přerušeno). Na hlavní obrazovce je třeba zmáčknout tlačítko \emph{History}. Tím přejde uživatel do seznamu všech měření.

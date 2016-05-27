@@ -1,0 +1,270 @@
+% One-page layout: (proof-)reading on display
+%%%% \documentclass[11pt,oneside,a4paper]{book}
+% Two-page layout: final printing
+\documentclass[11pt,twoside,a4paper]{book}   
+%=-=-=-=-=-=-=-=-=-=-=-=--=%
+% The user of this template may find useful to have an alternative to these 
+% officially suggested packages:
+\usepackage[czech, english]{babel}
+\usepackage[T1]{fontenc} % pouzije EC fonty 
+% pripadne pisete-li cesky, pak lze zkusit take:
+% \usepackage[OT1]{fontenc} 
+\usepackage[utf8]{inputenc}
+\usepackage{subfig}
+%=-=-=-=-=-=-=-=-=-=-=-=--=%
+% In case of problems with PDF fonts, one may try to uncomment this line:
+%\usepackage{lmodern}
+%=-=-=-=-=-=-=-=-=-=-=-=--=%
+%=-=-=-=-=-=-=-=-=-=-=-=--=%
+% Depending on your particular TeX distribution and version of conversion tools 
+% (dvips/dvipdf/ps2pdf), some (advanced | desperate) users may prefer to use 
+% different settings.
+% Please uncomment the following style and use your CSLaTeX (cslatex/pdfcslatex) 
+% to process your work. Note however, this file is in UTF-8 and a conversion to 
+% your native encoding may be required. Some settings below depend on babel 
+% macros and should also be modified. See \selectlanguage \iflanguage.
+%\usepackage{czech}  %%%%%\usepackage[T1]{czech} %%%%[IL2] [T1] [OT1]
+%=-=-=-=-=-=-=-=-=-=-=-=--=%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Styles required in your work follow %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{graphicx}
+%\usepackage{indentfirst} %1. odstavec jako v cestine.
+
+\usepackage{misc/k336_thesis_macros} % specialni makra pro formatovani DP a BP
+ % muzete si vytvorit i sva vlastni v souboru k336_thesis_macros.sty
+ % najdete  radu jednoduchych definic, ktere zde ani nejsou pouzity
+ % napriklad: 
+ % \newcommand{\bfig}{\begin{figure}\begin{center}}
+ % \newcommand{\efig}{\end{center}\end{figure}}
+ % umoznuje pouzit prikaz \bfig namisto \begin{figure}\begin{center} atd.
+
+\newcommand\TypeOfWork{Bakalářská práce}  \typeout{Bakalarska prace}
+\newcommand\StudProgram{Softwarové technologie a management, Bakalářský}
+\newcommand\StudBranch{Softwarové inženýrství}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Vyplnte nazev prace, autora a vedouciho
+% Set up Work Title, Author and Supervisor
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand\WorkTitle{Měření kvality mobilních datových sítí - Mobilní klient}
+\newcommand\FirstandFamilyName{Michal Švácha}
+\newcommand\Supervisor{Ing. Ondřej Votava}
+
+
+% Pouzijete-li pdflatex, tak je prijemne, kdyz bude mit vase prace
+% funkcni odkazy i v pdf formatu
+\usepackage[
+pdftitle={\WorkTitle},
+pdfauthor={\FirstandFamilyName},
+bookmarks=true,
+colorlinks=true,
+breaklinks=true,
+urlcolor=red,
+citecolor=blue,
+linkcolor=blue,
+unicode=true,
+]
+{hyperref}
+
+
+% Extension posted by Petr Dlouhy in order for better sources reference (\cite{} command) especially in Czech.
+% April 2010
+% See comment over \thebibliography command for details.
+\usepackage[square, numbers, comma, sort & compress]{natbib}
+%\usepackage[square, numbers]{natbib}             % sazba pouzite literatury
+%\usepackage{url}
+%\DeclareUrlCommand\url{\def\UrlLeft{<}\def\UrlRight{>}\urlstyle{tt}}  %rm/sf/tt
+%\renewcommand{\emph}[1]{\textsl{#1}}    % melo by byt kurziva nebo sklonene,
+\let\oldUrl\url
+\renewcommand\url[1]{<\texttt{\oldUrl{#1}}>}
+
+\usepackage{listings}
+
+\begin{document}
+
+\lstdefinelanguage[Objective]{C}[GNU99]{C}
+	{ morekeywords = {
+			@catch,@class,@encode,@end,@finally,@implementation,
+			@interface,@private,@protected,@protocol,@public,@selector,
+      		@synchronized,@throw,@try,BOOL,Class,IMP,NO,Nil,SEL,YES,_cmd,
+      		bycopy,byref,id,in,inout,nil,oneway,out,self,super,
+      		% The next two lines are Objective-C 2 keywords.
+      		@dynamic,@package,@property,@synthesize,readwrite,readonly,
+      		assign,retain,copy,nonatomic
+		},
+   		moredirectives={import}
+	}
+
+\lstdefinelanguage[GNU99]{C}[99]{C}
+	{morekeywords = {asm,__asm__,__extension__,typeof,__typeof__}}
+
+\lstdefinelanguage[99]{C}%
+	{ morekeywords={_Bool,_Complex,_Imaginary,auto,break,case,char,
+			const,continue,default,do,double,else,enum,extern,float,for,
+      		goto,if,inline,int,long,register,restrict,return,short,signed,
+      		sizeof,static,struct,switch,typedef,union,unsigned,void,volatile,
+      		while
+      	},
+   		sensitive,
+   		morecomment=[s]{/*}{*/},
+   		morecomment=[l]//,
+   		morestring=[b]",
+   		morestring=[b]',
+   		moredelim=*[directive]\#,
+   		moredirectives = {
+   			define,elif,else,endif,error,if,ifdef,ifndef,line,
+      		include,pragma,undef,warning
+      	}
+  	} [keywords,comments,strings,directives]
+
+\lstset{language=[Objective]C, breakindent=40pt, breaklines}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Zvolte jednu z moznosti 
+% Choose one of the following options
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\selectlanguage{czech}
+%\selectlanguage{english} 
+
+% prikaz \typeout vypise vyse uvedena nastaveni v prikazovem okne
+% pro pohodlne ladeni prace
+
+
+\iflanguage{czech}{
+	 \typeout{************************************************}
+	 \typeout{Zvoleny jazyk: cestina}
+	 \typeout{Typ prace: \TypeOfWork}
+	 \typeout{Studijni program: \StudProgram}
+	 \typeout{Obor: \StudBranch}
+	 \typeout{Jmeno: \FirstandFamilyName}
+	 \typeout{Nazev prace: \WorkTitle}
+	 \typeout{Vedouci prace: \Supervisor}
+	 \typeout{***************************************************}
+	 \newcommand\Department{Katedra počítačů}
+	 \newcommand\Faculty{Fakulta elektrotechnická}
+	 \newcommand\University{České vysoké učení technické v Praze}
+	 \newcommand\labelSupervisor{Vedoucí práce}
+	 \newcommand\labelStudProgram{Studijní program}
+	 \newcommand\labelStudBranch{Obor}
+}{
+	 \typeout{************************************************}
+	 \typeout{Language: english}
+	 \typeout{Type of Work: \TypeOfWork}
+	 \typeout{Study Program: \StudProgram}
+	 \typeout{Study Branch: \StudBranch}
+	 \typeout{Author: \FirstandFamilyName}
+	 \typeout{Title: \WorkTitle}
+	 \typeout{Supervisor: \Supervisor}
+	 \typeout{***************************************************}
+	 \newcommand\Department{Department of Computer Science and Engineering}
+	 \newcommand\Faculty{Faculty of Electrical Engineering}
+	 \newcommand\University{Czech Technical University in Prague}
+	 \newcommand\labelSupervisor{Supervisor}
+	 \newcommand\labelStudProgram{Study Programme} 
+	 \newcommand\labelStudBranch{Field of Study}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%    Titulni stranka / Title page 
+
+\coverpagestarts
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%    Podekovani / Acknowledgements 
+
+\acknowledgements
+\noindent
+Rád bych poděkoval celému týmu z projektu MBTest, jmenovitě Davidu Watzkemu za funkční backend, Radku Pilařovi za webové stránky a nejapné poznámky směrem k platformě iOS, Filipu Mudruňkovi za pomoc při luštění dokumentace k backendu (ve formě nekonečných e-mailů) a samozřejmě Ing. Ondřeji Votavovi a Ing. Janu Kubrovi za pevné nervy a skvělé vedení projektu.
+
+\bigbreak
+
+Rád bych poděkoval celé mé rodině za podporu při studiu na FEL ČVUT a že se ze mě ještě stále nezbláznili.
+
+\bigbreak
+
+Nakonec bych rád poděkoval Mgr. Jitce Fišerové, jejíž poznámka "Michale, Vás je na humanitní studia škoda!" mě motivovala k vybrání nejlepší možné vysoké školy - ČVUT.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%   Prohlaseni / Declaration 
+
+\declaration{V~Praze dne 23.\,5.\,2013}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%    Abstract 
+ 
+\abstractpage
+
+This bachelor thesis deals with measurement of mobile data network and its parameters. The thesis focuses mainly on mobile client for iOS operating system running on Apple iPhone devices. Output of the user measuring are data for statistical front-end. 
+
+The result of this thesis is an objective evaluation of mobile data networks.
+
+
+\vglue60mm
+
+\noindent{\Huge \textbf{Abstrakt}}
+\vskip 2.75\baselineskip
+
+\noindent
+Tato bakalářská práce se zabývá problematikou měření mobilních datových sítí. Práce se soustřeďuje na mobilního klienta pro operační systém iOS, běžící na chytrých telefonech iPhone od společnosti Apple. Výstupem měření touto aplikací uživateli jsou podklady pro statistický front-end. 
+
+Výsledkem pro uživatele je objektivní zhodnocení kvality mobilních datových sítí.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Obsah / Table of Contents 
+
+\tableofcontents
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Seznam obrazku / List of Figures 
+
+\listoffigures
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Seznam tabulek / List of Tables
+
+\listoftables
+
+
+%**************************************************************
+
+\mainbodystarts
+% horizontalní mezera mezi dvema odstavci
+%\parskip=5pt
+\normalfont
+\parskip=0.2\baselineskip plus 0.2\baselineskip minus 0.1\baselineskip
+
+% Odsazeni prvniho radku odstavce resi class book (neaplikuje se na prvni 
+% odstavce kapitol, sekci, podsekci atd.) Viz usepackage{indentfirst}.
+% Chcete-li selektivne zamezit odsazeni 1. radku nektereho odstavce,
+% pouzijte prikaz \noindent.
+
+%*****************************************************************************
+
+\include{chapters/01_introduction}
+
+\include{chapters/02_analysis}
+
+\include{chapters/03_implementation}
+
+\include{chapters/04_testing}
+
+\include{chapters/05_conclusion}
+
+%*****************************************************************************
+
+\bibliographystyle{misc/csplainnat}
+\bibliography{reference}
+
+%*****************************************************************************
+
+\appendix
+
+\include{chapters/AX_abbrev}
+\include{chapters/AX_graphics}
+\include{chapters/AX_handbook}
+\include{chapters/AX_cd}
+
+%*****************************************************************************
+
+\end{document}
