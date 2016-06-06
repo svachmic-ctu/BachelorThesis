@@ -2,9 +2,9 @@
 
 Bachelor's Thesis at CTU in Prague (Summer 2013)
 
-[![Twitter](https://img.shields.io/badge/twitter-@miguelitinho-blue.svg?style=flat)](http://twitter.com/miguelitinho)
+[![Twitter](https://img.shields.io/badge/twitter-@miguelitinho-4099ff.svg?style=flat)](http://twitter.com/miguelitinho)
+[![Institution](https://img.shields.io/badge/institution-ctu-yellow.svg?style=flat)](https://www.fel.cvut.cz/en/)
 [![Language](https://img.shields.io/badge/language-czech-green.svg?style=flat)](https://en.wikipedia.org/wiki/Czech_language)
-
 
 ## Abstract
 
